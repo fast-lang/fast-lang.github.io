@@ -107,7 +107,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-ckr7m2bp50001p6zvdijzapwm" class="article article-type-post" itemscope
+    <article id="post-ckra8oi8u00016wzvd45da8nw" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -167,7 +167,7 @@
 <pre><code class="sh"># node -v
 v12.13.0
 </code></pre>
-<p>2.点击[git官网地址下载]git版本管理工具</p>
+<p>2.点击<a target="_blank" rel="noopener" href="https://git-scm.com/">git官网地址下载</a>git版本管理工具</p>
 <pre><code class="sh"># git --version
 git version 2.15.0
 </code></pre>
@@ -192,10 +192,39 @@ hexo server # 启动本地服务器，可以在localhost:4000查看网站修改�
 <pre><code class="sh">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s
 </code></pre>
 <p>出现 “ Hexo is running at <a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000</a> . Press Ctrl+C to stop” 时，证明 Hexo 已经启动，可以打开浏览器进行访问</p>
-<h4 id="为博客更换主题"><a href="#为博客更换主题" class="headerlink" title="为博客更换主题"></a>为博客更换主题</h4><p>访问 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">https://hexo.io/themes/</a>，寻找喜欢的主题。</p>
+<h2 id="为博客更换主题"><a href="#为博客更换主题" class="headerlink" title="为博客更换主题"></a>为博客更换主题</h2><p>1.访问 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">https://hexo.io/themes/</a>，寻找喜欢的主题。</p>
 <p>到博客项目下面的 theme 文件夹下面执行 git clone 命令下载喜欢的主题代码。<br>我的路径是: ~/Desktop/blog/theme，我的博客主题是Aomori</p>
 <pre><code class="sh">git clone https://github.com/lh1me/hexo-theme-aomori
 </code></pre>
+<p>执行完这个命令后，能够看到，多了一个 <code>hexo-theme-aomori-master </code> 文件夹，这个就是 Aomori 主题。</p>
+<p>2.使用该主题<br>回到当前所处的文件夹 theme 的上一级(即我们执行 hexo init 命令时所在的目录)，可以看到有个文件叫 _config.yml。<br>把这个文件中 <code>theme: landscape</code> 配置项改为 <code>theme: hexo-theme-aomori-master</code> , 一定要注意此配置文件是yaml格式的，所以冒号后面的空格不可以少哦。</p>
+<p>这个文件的文档可以参照 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/configuration">https://hexo.io/zh-cn/docs/configuration</a>。</p>
+<p>保存修改之后，在当前目录进行<code>命令三连</code>。</p>
+<pre><code class="sh">hexo clean &amp;&amp; hexo g &amp;&amp; hexo s
+</code></pre>
+<p>打开<code>http://localhost:4000</code>就可以看到主题应用成功了。</p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>1.复制刚刚在 github 创建的仓库HTTPS地址。</p>
+<pre><code>https://github.com/lh1me/hexo-theme-aomori.git
+</code></pre>
+<p>2.同样修改_config.yml 最后几行：</p>
+<pre><code class="sh"># Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  repository: https://github.com/lh1me/hexo-theme-aomori.git
+  branch: master
+</code></pre>
+<p>这里的目的是：让 hexo 知道把博客推到哪个仓库的哪个分支上。</p>
+<p>3.安装deployer</p>
+<pre><code class="sh">npm install --save hexo-deployer-git
+</code></pre>
+<p>4.三连部署</p>
+<pre><code class="sh">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d
+</code></pre>
+<p>这次最后一个字母变成了 d， 代表的是部署。出现 <code>INFO  Deploy done: git</code> 代表部署成功。</p>
+<h2 id="pages-服务"><a href="#pages-服务" class="headerlink" title="pages 服务"></a>pages 服务</h2><p>到 github 仓库中就可以看到刚刚部署推送的代码了。</p>
+<p>1.找到仓库的 settings 按钮入口，进入之后点击左侧 pages 就可以看到你的博客域名了。</p>
+<p>点击进去就可以看到<a target="_blank" rel="noopener" href="https://fast-lang.github.io/">博客的样子</a>了。</p>
 
         </div>
 
