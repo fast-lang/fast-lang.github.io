@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     
-    <title>9_Go基础之函数 | 段日月的博客</title>
+    <title>10_Go基础之指针 | 段日月的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     
@@ -107,7 +107,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-ckrbup0e30003f0zv9nu28dib" class="article article-type-post" itemscope
+    <article id="post-ckrbup0e00001f0zv1gxy8cjw" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -123,7 +123,7 @@
             
   
     <h1 class="article-title" itemprop="name">
-      9_Go基础之函数
+      10_Go基础之指针
     </h1>
   
 
@@ -133,7 +133,7 @@
         <div class="article-more-info article-more-info-post hairline">
 
             <div class="article-date">
-  <time datetime="2021-07-19T07:23:44.000Z" itemprop="datePublished">2021-07-19</time>
+  <time datetime="2021-07-20T03:01:44.000Z" itemprop="datePublished">2021-07-20</time>
 </div>
 
             
@@ -157,124 +157,94 @@
         </div>
 
         <div class="article-entry post-inner-html hairline" itemprop="articleBody">
-            <p>简介: 函数是组织好的、可以重复使用的、用于执行指定任务的代码块。Go 中支持<strong>普通函数</strong>、<strong>匿名函数</strong>，能够使用闭包技术，同样，函数在 Go 中也是一等公民。 <span id="more"></span></p>
-<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a>函数定义</h2><p>Go 中定义函数使用 <code>func</code> 关键字。 通用格式如下: </p>
-<pre><code class="Go">func 函数名(参数) (返回值) &#123;
-    
-    函数体逻辑
+            <p>简介: 区别于 C/C++ , Go 中的指针不能进行偏移和运算，属于安全指针。 <span id="more"></span></p>
+<p>Go 语言中的函数传参都是值拷贝，如果我们想修改某个变量时，可以创建一个指向该变量地址的指针变量。&amp;(取地址),*(根据地址取值)。</p>
+<h2 id="指针地址和指针类型"><a href="#指针地址和指针类型" class="headerlink" title="指针地址和指针类型"></a>指针地址和指针类型</h2><p>Go中值类型(int float bool string array struct)都有对应的指针类型，如 *int *int64 *string等。</p>
+<pre><code class="go">
+a := &quot;this is a boy&quot;
+
+ptr = &amp;a
+</code></pre>
+<p>那么 ptr 的类型就是 *string。</p>
+<p>例子:</p>
+<pre><code class="go">
+func main() &#123;
+
+    a := 10
+    b := &amp;a
+
+    fmt.Printf(&quot;a: %d ptr: %p\n&quot;, a, &amp;a)  // a的值，和a的地址
+    fmt.Printf(&quot;b:%p type:%T\n&quot;, b, b)  // b的值，存的是a的地址
+    fmt.Printf(&amp;b)   // 存b的地址
+
 
 &#125;
 </code></pre>
+<h2 id="指针取值"><a href="#指针取值" class="headerlink" title="指针取值"></a>指针取值</h2><p>通过上面一个capture 可以知道，对变量进行 &amp; 操作可以获取变量的地址，那么我们只需要对地址使用*就可以取到地址对应的值了。</p>
+<pre><code class="go">
+func main() &#123;
+    a := 10
+    b := &amp;a    // 取变量a的地址，存放在b变量中
+    fmt.Printf(&quot;b的类型: %T\n&quot;, b)  // *int
+    c := *b   // 指针取值，根据b存放的地址，可以取到a的值10  
+    fmt.Printf(&quot;c的类型: %T\n&quot;, c) // int
+    fmt.Printf(&quot;c的值: %v\n&quot;, c)  // 10
+&#125;
+</code></pre>
+<p><strong>总结</strong>: 取地址操作符 <code>&amp;</code> 和取值操作符 <code>*</code> 是一对互补操作符，<code>&amp;</code> 取出地址，<code>*</code> 根据地址取出地址指向的值。</p>
 <ul>
-<li>函数名: 和变量命名规则相同；</li>
-<li>参数: 参数由参数变量和参数变量类型组成，如果有多个参数使用逗号分隔；</li>
-<li>返回值: 返回值由返回值变量和返回值类型组成，多个返回值必须使用小括号包起来并使用逗号隔开。</li>
-<li>函数体逻辑: 用来实现函数功能的逻辑代码。</li>
+<li>对变量进行取地址 <code>&amp;</code> 操作，可以获得这个变量的指针变量。</li>
+<li>指针变量的值是指针地址。</li>
+<li>对指针变量进行取值 <code>*</code> 操作，可以获得指针变量指向的原变量的值。</li>
 </ul>
-<p>函数的参数和返回值可选。比如定义一个没有入参，也没返回值的函数，此时入参和返回值就可以为空。</p>
-<h2 id="函数定义示例"><a href="#函数定义示例" class="headerlink" title="函数定义示例"></a>函数定义示例</h2><p>定义一个求和函数:</p>
-<pre><code class="Go">func intSum(x int, y int) int &#123;
-    return x + y
-&#125;
-</code></pre>
-<h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><p>在函数参数类型前面加入…为可变类型参数，接收后在函数内部为切片类型, 可变参数要放在后面。</p>
-<p>Go 中没有默认参数。</p>
-<pre><code class="Go">func intSum(a ...int) &#123;
-    fmt.Println(a)  // 切片类型
-    ret := 0
-    for _, v := range a &#123;
-        ret = ret + v
-    &#125;
-    return ret
-&#125;
-</code></pre>
-<h2 id="参数类型简写"><a href="#参数类型简写" class="headerlink" title="参数类型简写"></a>参数类型简写</h2><pre><code class="Go">func intSum(a, b int) (ret int) &#123;
-    
-&#125;
-</code></pre>
-<h2 id="多返回值"><a href="#多返回值" class="headerlink" title="多返回值"></a>多返回值</h2><p>也支持类型简写。</p>
-<pre><code class="Go">func intSum(a, b int) (x, y int) &#123;
-    x := a + b
-    y := a - b
-    return
-
-&#125;
-</code></pre>
-<h2 id="defer-语句"><a href="#defer-语句" class="headerlink" title="defer 语句"></a>defer 语句</h2><p>Go 语言中的 <code>defer</code> 语句会将其后跟随的语句进行延时处理。在 defer 归属的函数即将返回时，将延迟处理的语句按照 defer 定义的顺序的逆序进行执行，最先 defer 的最后执行，最后defer的最先执行，类似于<code>压栈</code>处理。</p>
-<pre><code class="Go">package main
-
-import &quot;fmt&quot;
-
-// defer 延迟执行
-func main() &#123;
-    fmt.Println(&quot;start &quot;)
-    defer fmt.Println(1)
-    defer fmt.Println(2)
-    defer fmt.Println(3)
-    fmt.Println(&quot;end &quot;)
-
-&#125;
-
-// start end 3 2  1
-</code></pre>
-<p>由于 defer 的特性，一般用于资源的释放等等一些收尾操作。</p>
-<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>函数中：1. 先查找函数作用域； 2. 再往上层找；类似 python 中的查找方式。也有块变量，类似JavaScript。</p>
-<pre><code class="Go">var num = 10
-
-func testGlobal() &#123;
-    fmt.Println(num)  // 可以在函数作用于访问到全局变量
-
-    num := 100
-
-    fmt.Println(num)   //
-
-
-&#125;
-</code></pre>
-<h2 id="高级函数"><a href="#高级函数" class="headerlink" title="高级函数"></a>高级函数</h2><p>接收、或返回函数的函数称为高级函数。</p>
+<h2 id="new-和-make"><a href="#new-和-make" class="headerlink" title="new 和 make"></a>new 和 make</h2><p>引导例子:</p>
 <pre><code class="go">
-func add(x, y int) int &#123;
-    return x + y
-&#125;
+func main () &#123;
+    var a *int  // a会是 nil
+    *a = 100
+    fmt.Println(*a)
 
 
-func calc(x, y int, op func(int, int), int) int &#123;
-    return op(x, y)
-&#125;
-
-
-func main() &#123;
-
-    r1 := calc(100, 200, add)
-
-)
-</code></pre>
-<p>其中op接收的是函数。</p>
-<h2 id="匿名函数定义"><a href="#匿名函数定义" class="headerlink" title="匿名函数定义"></a>匿名函数定义</h2><pre><code class="go">
-func (参数)(返回值)&#123;
-    函数体
+    var b map[string]int
+    b[&quot;boy&quot;] = 1
+    fmt.Println(b)
 &#125;
 </code></pre>
-<p>调用时就像 python 中的匿名函数一样，可以直接加括号调用。</p>
+<p>执行 引导例子 会引发一场，在 Go 中对于引用类型的变量，在使用的时候不仅要<code>声明</code>，还要为它<code>分配内存</code>，否则赋值操作是没办法完成的。</p>
+<p>而对于值类型的声明不需要分配内存空间，是因为它们在声明的时候已经默认分配好了内存空间。</p>
+<p>关于内存空间，Go 中使用 <code>new</code> 和 <code>make</code> 两个内建函数。</p>
+<h2 id="new"><a href="#new" class="headerlink" title="new"></a>new</h2><p>new 内置函数的签名如下: </p>
+<pre><code class="go">func new(Type) *Type
+</code></pre>
+<p>可以看出，new 函数只接收一个类型；返回的是一个指向入参类型内存地址的指针。</p>
+<p>使用 new 函数得到的是指定类型变量的指针，并且这个指针指向的值时这个类型的零值。</p>
+<p>例:</p>
+<pre><code class="go">func main() &#123;
+    a := new(int)   // a 是一个指针变量，a的类型为 *int
+    b := new(bool)  // b 是一个指针变量，b的类型为 *bool
+    fmt.Printf(&quot;%T\n&quot;, a) // *int
+    fmt.Printf(&quot;%T\n&quot;, b) // *bool
+    fmt.Println(*a)   // 0
+    fmt.Println(*b)   // false
+&#125;
+</code></pre>
+<p>所以，引导例子中 <code>var a *int</code>只是声明了一个指针变量 a ，但是没有初始化，指针作为<code>引用类型</code>需要初始化后才能拥有内存空间，才能给它赋值。</p>
+<h2 id="make"><a href="#make" class="headerlink" title="make"></a>make</h2><p>make 也是用于内存分配，但是有别于 new，只能用于 slice、map、chan 的内存创建，而且 make 返回的类型是这三个类型的本身，而不是他们的指针类型，因为这三种类型已经是引用类型了，所以没有必要返回它们的指针。</p>
+<p>make 的函数签名:</p>
+<pre><code class="go">
+func make(t Type, size 。。。IntegerType) type
+</code></pre>
+<p>例:</p>
 <pre><code class="go">
 func main() &#123;
-    func (x, y int) &#123;
-        fmt.Println(x+y)
-    &#125;(1, 2)   // 直接执行
-
+    var b map[string]int
+    b = make(map[string]int, 10)
+    b[&quot;小明&quot;] = 100
+    fmt.Println(b)
 &#125;
 </code></pre>
-<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p><code>闭包 = 函数 + 函数内引用</code>：</p>
-<pre><code class="go">
-func addr () func(int) int &#123;
-    var x int
-    return func(y int) int &#123;
-        x += y
-        return x
-    &#125;
-&#125;
-</code></pre>
-<h2 id="-1"><a href="#-1" class="headerlink" title=""></a></h2>
+<p>所以，make 和 new 都是用来内存分配的，但是返回的东西不一样，服务的对象也不同。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
         </div>
 
     </div>
@@ -298,19 +268,10 @@ func addr () func(int) int &#123;
     
 <nav class="article-nav">
   
-    <a href="/2021/07/20/10_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%8C%87%E9%92%88/" id="article-nav-newer" class="article-nav-link-wrap">
-      <div class="article-nav-caption">下一篇</div>
-      <div class="article-nav-title">
-        
-          10_Go基础之指针
-        
-      </div>
-    </a>
   
-  
-    <a href="/2021/07/17/%E4%BD%BF%E7%94%A8github+hexo%E5%8D%81%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BA%E4%B8%93%E5%B1%9E%E5%8D%9A%E5%AE%A2/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/07/19/9_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%87%BD%E6%95%B0/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-caption">上一篇</div>
-      <div class="article-nav-title">使用github+hexo十分钟搭建专属博客</div>
+      <div class="article-nav-title">9_Go基础之函数</div>
     </a>
   
 </nav>
@@ -319,15 +280,15 @@ func addr () func(int) int &#123;
     <section class="share">
         <div class="share-title">分享</div>
         <a class="share-item" target="_blank"
-            href="https://twitter.com/share?text=9_Go基础之函数 - 段日月的博客&url=http://example.com/2021/07/19/9_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%87%BD%E6%95%B0/">
+            href="https://twitter.com/share?text=10_Go基础之指针 - 段日月的博客&url=http://example.com/2021/07/20/10_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%8C%87%E9%92%88/">
             <box-icon type='logo' name='twitter'></box-icon>
         </a>
         <a class="share-item" target="_blank"
-            href="https://www.facebook.com/sharer.php?title=9_Go基础之函数 - 段日月的博客&u=http://example.com/2021/07/19/9_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%87%BD%E6%95%B0/">
+            href="https://www.facebook.com/sharer.php?title=10_Go基础之指针 - 段日月的博客&u=http://example.com/2021/07/20/10_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%8C%87%E9%92%88/">
             <box-icon name='facebook-square' type='logo' ></box-icon>
         </a>
         <!-- <a class="share-item" target="_blank"
-            href="https://service.weibo.com/share/share.php?title=9_Go基础之函数 - 段日月的博客&url=http://example.com/2021/07/19/9_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%87%BD%E6%95%B0/&pic=">
+            href="https://service.weibo.com/share/share.php?title=10_Go基础之指针 - 段日月的博客&url=http://example.com/2021/07/20/10_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%8C%87%E9%92%88/&pic=">
             <div class="n-icon n-icon-weibo"></div>
         </a> -->
     </section>
