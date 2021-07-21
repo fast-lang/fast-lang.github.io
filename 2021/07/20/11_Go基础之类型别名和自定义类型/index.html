@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Archive | 2021 | 段日月的博客</title>
+    <title>11_Go基础之类型别名和自定义类型 | 段日月的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     
@@ -28,7 +28,7 @@
 
 
     <script>
-        window.isPost = false
+        window.isPost = true
         window.aomori = {
             
             
@@ -106,83 +106,161 @@
         <div class="main">
             <section class="inner">
                 <section class="inner-main">
-                    <section class="archives-cover"></section>
+                    <div class="post">
+    <article id="post-ckrdbw9vp0006u3zv88865lz8" class="article article-type-post" itemscope
+    itemprop="blogPost">
 
+    <div class="article-inner">
 
-    
-    
-    
-    
-    <section class="archives-wrap">
-        <div class="archive-year-wrap">
-        <a href="/archives/2021" class="archive-year">2021</a>
+        
+          
+        
+        
+        
+
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      11_Go基础之类型别名和自定义类型
+    </h1>
+  
+
+        </header>
+        
+
+        <div class="article-more-info article-more-info-post hairline">
+
+            <div class="article-date">
+  <time datetime="2021-07-20T09:26:44.000Z" itemprop="datePublished">2021-07-20</time>
+</div>
+
+            
+            <div class="article-category">
+                <a class="article-category-link" href="/categories/Go/">Go</a>
+            </div>
+            
+
+            
+            <div class="article-tag">
+                <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Go%E5%9F%BA%E7%A1%80/" rel="tag">Go基础</a></li></ul>
+            </div>
+            
+
+            
+            <div class="article-busuanzi">
+                有 <span id="busuanzi_value_page_pv">N</span> 人看过
+            </div>
+            
+
         </div>
-        <div class="archives">
+
+        <div class="article-entry post-inner-html hairline" itemprop="articleBody">
+            <p>简介: Go 中和其他语言一样，除了一些基础的数据类型，我们同样可以定义属于我们自己的自定义类型。 <span id="more"></span></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>Go 中使用的是 type 关键字来定义自定义类型。自定义类型是一个全新的类型，我们可以基于内置的基本类型定义，也可以通过 struct 定义。</p>
+<p>例如：</p>
+<pre><code class="go">type MyInt int
+</code></pre>
+<p>此时就定义好了一个新的类型: MyInt ，具有 int 的特性。</p>
+<h2 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h2><p>类型别名是 Go 1.9 版本才有的功能。</p>
+<pre><code class="go">type TypeAlias = Type
+</code></pre>
+<p>如上，TypeAlias 是 Type 的别名，本质上是没有区别的，如同一个人有中文名、英文名等等，都是指代这个人的。</p>
+<ul>
+<li>rune 和 byte 就是类型别名，定义如下:</li>
+</ul>
+<pre><code class="go">type byte = uint8
+type rune = int32
+</code></pre>
+<h2 id="类型定义和类型别名的区别"><a href="#类型定义和类型别名的区别" class="headerlink" title="类型定义和类型别名的区别"></a>类型定义和类型别名的区别</h2><pre><code class="go">// 类型定义
+type NewInt int
+
+// 类型别名
+type MyInt = int
+
+func main() &#123;
+    var a NewInt
+    var b MyInt
+
+    fmt.Printf(&quot;type of a: %T\n&quot;, a)   // NewInt 类型
+    fmt.Printf(&quot;type of b: %T\n&quot;, b)   // int 类型
+</code></pre>
+<p>结果可以看出，a 的类型是 main.NewInt , 表示 main 包下定义的 NewInt 类型。b的类型就是 int，所以类型别名智慧出现在代码中，编译完成的时候不会存在 MyInt 类型。</p>
+<h2 id="-1"><a href="#-1" class="headerlink" title=""></a></h2>
+        </div>
+
+    </div>
+
     
-    <article class="archive-article archive-type-post">
+
+    
+
+    
+
+    
+<div class="article-copyright hairline">
+  <p>
+    本作品采用 <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a> 进行许可。
+  </p>
+</div>
+
+
+    
+
+    
+<nav class="article-nav">
+  
+    <a href="/2021/07/20/12_Go%E7%B1%BB%E5%9E%8B%E4%B9%8B%E7%BB%93%E6%9E%84%E4%BD%93/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-caption">下一篇</div>
+      <div class="article-nav-title">
+        
+          12_Go基础之结构体
+        
+      </div>
+    </a>
   
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/20/12_Go%E7%B1%BB%E5%9E%8B%E4%B9%8B%E7%BB%93%E6%9E%84%E4%BD%93/">12_Go基础之结构体</a>
-    </h1>
+    <a href="/2021/07/20/10_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%8C%87%E9%92%88/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-caption">上一篇</div>
+      <div class="article-nav-title">10_Go基础之指针</div>
+    </a>
   
+</nav>
+
+
+    <section class="share">
+        <div class="share-title">分享</div>
+        <a class="share-item" target="_blank"
+            href="https://twitter.com/share?text=11_Go基础之类型别名和自定义类型 - 段日月的博客&url=http://example.com/2021/07/20/11_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B/">
+            <box-icon type='logo' name='twitter'></box-icon>
+        </a>
+        <a class="share-item" target="_blank"
+            href="https://www.facebook.com/sharer.php?title=11_Go基础之类型别名和自定义类型 - 段日月的博客&u=http://example.com/2021/07/20/11_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B/">
+            <box-icon name='facebook-square' type='logo' ></box-icon>
+        </a>
+        <!-- <a class="share-item" target="_blank"
+            href="https://service.weibo.com/share/share.php?title=11_Go基础之类型别名和自定义类型 - 段日月的博客&url=http://example.com/2021/07/20/11_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B/&pic=">
+            <div class="n-icon n-icon-weibo"></div>
+        </a> -->
+    </section>
 
 </article>
 
-    
-    
-    <article class="archive-article archive-type-post">
-  
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/20/11_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E5%92%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B/">11_Go基础之类型别名和自定义类型</a>
-    </h1>
-  
-
-</article>
-
-    
-    
-    <article class="archive-article archive-type-post">
-  
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/20/10_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%8C%87%E9%92%88/">10_Go基础之指针</a>
-    </h1>
-  
-
-</article>
-
-    
-    
-    <article class="archive-article archive-type-post">
-  
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/19/9_Go%E5%9F%BA%E7%A1%80%E4%B9%8B%E5%87%BD%E6%95%B0/">9_Go基础之函数</a>
-    </h1>
-  
-
-</article>
-
-    
-    
-    <article class="archive-article archive-type-post">
-  
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/07/17/%E4%BD%BF%E7%94%A8github+hexo%E5%8D%81%E5%88%86%E9%92%9F%E6%90%AD%E5%BB%BA%E4%B8%93%E5%B1%9E%E5%8D%9A%E5%AE%A2/">使用github+hexo十分钟搭建专属博客</a>
-    </h1>
-  
-
-</article>
-
-
-    </div></section>
 
 
 
 
+
+
+
+
+
+
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</div>
                 </section>
             </section>
 
@@ -194,6 +272,12 @@
 <div class="widget" id="widget">
     
       
+  <div class="widget-wrap">
+    <div class="widget-inner">
+      <div class="toc post-toc-html"></div>
+    </div>
+  </div>
+
     
       
   <div class="widget-wrap widget-cate">
