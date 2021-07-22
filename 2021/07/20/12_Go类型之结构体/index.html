@@ -107,7 +107,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-ckrdbw9vh0001u3zvhiaq7nz7" class="article article-type-post" itemscope
+    <article id="post-ckredq7e60001sdzvgsg0c3co" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -338,6 +338,138 @@ func (p *Person) setAge(newAge int8) &#123;
 <li>保证一致性，如果某个方法使用了指针接收者，那么其他的方法也应该使用指针接收者</li>
 </ul>
 <p>不能给内置类型定义方法，只能给自己包里的构造方法。</p>
+<h2 id="结构体的匿名字段"><a href="#结构体的匿名字段" class="headerlink" title="结构体的匿名字段"></a>结构体的匿名字段</h2><p>结构体允许其成员字段在声明时没有字段名而只有类型，这种没有名字的字段就称为匿名字段。</p>
+<pre><code class="go">
+// Person 结构体 有两个匿名字段
+type Person struct &#123;
+    string
+    int
+&#125;
+
+
+func main() &#123;
+    p1 := Person &#123;
+        &quot;小明&quot;,
+        18,
+        &#125;
+
+    fmt.Printf(&quot;%#v\n&quot;, p1)   // main.Person&#123;string:&quot;小明&quot;, int:18&#125;
+    fmt.Println(p1.string, p1.int)
+&#125;
+</code></pre>
+<p>注意：这里的匿名字段的说法并不代表没有字段名，而是默认会采用类型名作为字段名，又因为结构体要求字段名必须唯一，所以一个结构体中相同类型的匿名字段只能有一个。</p>
+<h2 id="嵌套结构体"><a href="#嵌套结构体" class="headerlink" title="嵌套结构体"></a>嵌套结构体</h2><p>一个结构体中可以嵌套包含另一个结构体或结构体指针，如下：</p>
+<pre><code class="go">// Address 地址结构体
+type Address struct &#123;
+    Province string
+    City     string
+&#125;
+
+// User 用户结构体
+type User struct &#123;
+    Name string
+    Gender string
+    Address Address
+&#125;
+
+func main() &#123;
+user1 := User &#123;
+    Name: &quot;小王子&quot;,
+    Gender: &quot;男&quot;,
+    Address: Address &#123;
+            Province: &quot;山东&quot;,
+             City: &quot;威海&quot;,
+       &#125;,
+&#125;
+</code></pre>
+<p>同样的，这里的Address 也可以采用匿名字段的形式。</p>
+<h2 id="结构体的”继承”"><a href="#结构体的”继承”" class="headerlink" title="结构体的”继承”"></a>结构体的”继承”</h2><p>Go 中使用结构体也可以实现其他编程语言中面向对象的继承。</p>
+<pre><code class="go">type Animal struct &#123;
+    name string
+&#125;
+
+func(a *Animal) mvoe () &#123;
+    fmt.Printf(&quot;%s会动！\n&quot;, a.name)
+&#125;
+
+type Dog struct &#123;
+    Feet int8
+    *Animal
+&#125;
+
+func (d *dog) wang() &#123;
+    fmt.Printf(&quot;%s会汪汪汪&quot;a, d.name)
+&#125;
+
+
+func main() &#123;
+    d1 := &amp;Dog&#123;
+        Feet: 4,
+        Animal: &amp;Animal&#123;
+            name: &quot;乐乐&quot;,
+        &#125;,
+    &#125;
+
+    d1.wang()
+    d1.move()
+
+&#125;
+</code></pre>
+<h2 id="结构体字段的可见性"><a href="#结构体字段的可见性" class="headerlink" title="结构体字段的可见性"></a>结构体字段的可见性</h2><p>在结构体中，小写表示私有，大写表示可以公开访问。</p>
+<h2 id="结构体与-json-序列化"><a href="#结构体与-json-序列化" class="headerlink" title="结构体与 json 序列化"></a>结构体与 json 序列化</h2><p>go 中使用 json 内置包进行转换。</p>
+<pre><code class="go">// Student 学生
+type Student struct &#123;
+    ID int
+    Gender string
+    Name string
+&#125;
+
+// Class 班级
+type Class struct &#123;
+    Title string
+    Students []*Student
+&#125;
+
+func main() &#123;
+    c := &amp;Class&#123;
+        Title: &quot;101&quot;,
+        Students: make([]*Student, 0, 200),
+    &#125;
+
+    for i:=0; i&lt;10; i++ &#123;
+        stu := &amp;Student&#123;
+            Name: fmt.Sprintf(&quot;stu%02d&quot;, i),
+            Gender: &quot;男&quot;,
+            ID: i,
+         &#125;
+        c.Students = append(c.Students, stu)
+       
+    &#125;
+
+    // json 序列化
+    data, err := json.Marshal(c)
+    fmt.Println(data)
+
+
+    // json 反序列化
+    str := `&#123;&quot;Title&quot;:&quot;101&quot;,&quot;Students&quot;:[&#123;&quot;ID&quot;:0,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu00&quot;&#125;,&#123;&quot;ID&quot;:1,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu01&quot;&#125;,&#123;&quot;ID&quot;:2,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu02&quot;&#125;,&#123;&quot;ID&quot;:3,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu03&quot;&#125;,&#123;&quot;ID&quot;:4,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu04&quot;&#125;,&#123;&quot;ID&quot;:5,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu05&quot;&#125;,&#123;&quot;ID&quot;:6,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu06&quot;&#125;,&#123;&quot;ID&quot;:7,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu07&quot;&#125;,&#123;&quot;ID&quot;:8,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu08&quot;&#125;,&#123;&quot;ID&quot;:9,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu09&quot;&#125;]&#125;`
+    c1 := &amp;Class&#123;&#125;
+    err = json.Unmarshal([]byte(str), c1)
+    if err != nil &#123;
+        fmt.Println(&quot;json unmarshal failed!&quot;)
+        return
+    &#125;
+    fmt.Printf(&quot;%#v\n&quot;, c1)
+&#125;
+</code></pre>
+<h2 id="结构体标签"><a href="#结构体标签" class="headerlink" title="结构体标签"></a>结构体标签</h2><p>Tag 是结构体元信息，可以在运行时候通过反射的机制读取出来。</p>
+<pre><code class="Go">`key1:&quot;value1&quot; key2:&quot;value2&quot;`
+</code></pre>
+<p>]<br>结构体tag由一个或多个键值对组成，键与值使用冒号分割，值使用双引号括起来。同一个结构体字段可以设置多个键值对tag。</p>
+<pre><code class="go">type Student struct &#123;
+    ID int `json:&quot;id&quot;`
+&#125;
+</code></pre>
 <h2 id="-1"><a href="#-1" class="headerlink" title=""></a></h2>
         </div>
 
